@@ -1,0 +1,6 @@
+main: me.color.Main
+name: ColorRanking
+version: 0.4
+
+command:
+  setpoints:
