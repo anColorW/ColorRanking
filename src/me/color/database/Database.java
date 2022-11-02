@@ -1,6 +1,8 @@
 package me.color.database;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 
@@ -14,14 +16,32 @@ public class Database {
             e.printStackTrace();
         }
     }
+//for (int i = 0; i < 5 && rs.next(); i++) {
+//
+//    itemList.add(rs.getString("idName"));
+//
+//}
 
-
-    public String printData(String query){
+    public void printDataArray(String query, ArrayList<String> array){
         try{
             Statement stmt=con.createStatement();
             ResultSet rs=stmt.executeQuery(query);
-            while(rs.next())
-                return rs.getString(1);
+            for (int i = 0; i < 5 && rs.next(); i++) {
+                array.add(rs.getString("PlayerName"));
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    public String printData(String query, int column){
+        try{
+            Statement stmt=con.createStatement();
+            ResultSet rs=stmt.executeQuery(query);
+
+            while (rs.next()) {
+                return rs.getObject(column).toString();
+            }
         }
         catch(Exception e){
             System.out.println(e);
@@ -37,21 +57,31 @@ public class Database {
     }
 
 
-    public void insertQuery(String query) throws SQLException {
-        if(!con.isClosed()) {
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate(query);
+    public void insertQuery(String query) {
+        try{
+            if(!con.isClosed()) {
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate(query);
 
+            }
         }
+        catch(Exception e){
+            System.out.println(e);
+        }
+
     }
 
-    public boolean exist(String query) throws SQLException {
-        if(!con.isClosed()){
-            Statement stmt=con.createStatement();
-            ResultSet rs=stmt.executeQuery(query);
-            if(rs.next())
-                return true;
+    public boolean exist(String query) {
+        try {
+            if(!con.isClosed()){
+                Statement stmt=con.createStatement();
+                ResultSet rs=stmt.executeQuery(query);
+                if(rs.next())
+                    return true;
 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return false;
